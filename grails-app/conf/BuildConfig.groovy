@@ -71,7 +71,12 @@ grails.project.dependency.resolution = {
 		compile('org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.1')
 		compile('org.antlr:ST4:4.0.8')
 		compile('org.postgresql:postgresql:9.4.1208.jre7')
-		compile('io.lettuce:lettuce-core:5.3.0.RELEASE')
+		compile('io.lettuce:lettuce-core:5.3.0.RELEASE') {
+			excludes('io.netty:netty-common:*') // Conflicts with Netty version imported by ethereumj-core
+			excludes('io.netty:netty-handler:*')
+			excludes('io.netty:netty-transport:*')
+			excludes('io.netty:netty-transport:*')
+		}
 		compile('com.datastax.cassandra:cassandra-driver-core:3.7.1')
 		compile('com.google.code.findbugs:jsr305:3.0.2')
 		compile('org.jetbrains:annotations:17.0.0')

@@ -1,23 +1,44 @@
 package com.unifina.domain
 
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 import grails.compiler.GrailsCompileStatic
 
 @GrailsCompileStatic
 class CustomStreamIDValidator {
 
-	public static final String SANDBOX_PREFIX = "sandbox"
-	public static final String PATH_REGEX = "^/(?:[\\w\\.-]+/?)*\\w\$"
+	interface DomainValidator {
+		boolean isOwnedBy(String domain, User owner)
+	}
 
-	static final Closure validate = { String id ->
+	public static final String SANDBOX_HOST = "sandbox"
+	public static final Pattern REGEX = Pattern.compile("^((?:[\\w-]+\\.?)*\\w)/(?:[\\w\\.-]+/?)*\\w\$")
+
+	DomainValidator domainValidator
+
+	CustomStreamIDValidator(DomainValidator domainValidator) {
+		this.domainValidator = domainValidator;
+	}
+
+	boolean validate(String id, User creator) {
 		if (id == null) {
 			return true
 		} else {
-			if (id.startsWith(CustomStreamIDValidator.SANDBOX_PREFIX)) {
-				String path = id.substring(SANDBOX_PREFIX.length())
-				return path.matches(PATH_REGEX)
+			Matcher matcher = REGEX.matcher(id)
+			if (matcher.matches()) {
+				String host = matcher.group(1)
+				return isValidHost(host, creator)
 			} else {
 				return false;
 			}
+		}
+	}
+
+	boolean isValidHost(String host, User creator) {
+		if (host.equals(SANDBOX_HOST)) {
+			return true
+		} else {
+			return domainValidator.isOwnedBy(host, creator)
 		}
 	}
 }

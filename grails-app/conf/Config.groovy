@@ -243,7 +243,8 @@ environments {
 		streamr.ethereum.ensRegistryContractAddress = "0x92E8435EB56fD01BF4C79B66d47AC1A94338BB03"
 	}
 	test {
-		streamr.ethereum.ensRegistryContractAddress = "0x9Ac9ef900B7E43058169b2AaD8BF6ce31f3703Da"
+		streamr.ethereum.ensRegistryContractAddress = "0x92E8435EB56fD01BF4C79B66d47AC1A94338BB03"
+		// TODO stagning should use this: streamr.ethereum.ensRegistryContractAddress = "0x9Ac9ef900B7E43058169b2AaD8BF6ce31f3703Da"
 	}
 	production {
 		streamr.ethereum.ensRegistryContractAddress = Contracts.MAINNET
